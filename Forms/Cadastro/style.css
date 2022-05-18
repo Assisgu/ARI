@@ -66,8 +66,12 @@ body {
 }
 
 .login-button button:hover {
-    background-color: #fff;
+    background-color: red;
+}
 
+.login-button button a:hover {
+   color: pink;
+   width: 100vw;
 }
 
 .login-button button a {
@@ -154,7 +158,7 @@ body {
     margin-top: 1.3rem;
     border: none;
     background-color: #40f6bf;
-    padding: 0.62rem;
+    padding: 0.55rem;
     border-radius: 5px;
     cursor: pointer;
 }
