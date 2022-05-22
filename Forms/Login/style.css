@@ -11,7 +11,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #1eb5;
+    background-color: #fca311;
 }
 
 .container {
@@ -43,27 +43,20 @@ body {
     align-items: center;
 }
 
-.cadastro-button button {
+.cadastro-button a{
     border: none;
-    background-color: #73d8b9;
-    padding: 0.5rem 1.5rem;
+    background-color: #7b2cbf;
+    color: #fff;
+    padding: 0.5rem 0.8rem;
+    font-size:0.9rem;
     border-radius: 4px;
     cursor:pointer;
-}
-
-.cadastro-button button:hover {
-    background-color: red;
-}
-
-.cadastro-button button a:hover {
-   color: pink;
-   width: 100vw;
-}
-
-.cadastro-button button a {
     text-decoration: none;
-    font-weight: 500;
-    color: #000;
+    transition:all 0.2s ease-out;
+}
+
+.cadastro-button a:hover {
+    letter-spacing: 0.9px;
 }
 
 .form-header h2::after {
@@ -71,7 +64,7 @@ body {
     display: block;
     width: 1.5rem;
     height: 0.25rem;
-    background-color: #40f6bf;
+    background-color: #7b2cbf;
     margin: 0 auto;
     position: absolute;
     border-radius: 20px;
@@ -91,7 +84,7 @@ body {
 
 .input-box input {
     margin: 0rem 0;
-    padding: 1rem 4.4rem;
+    padding: 1rem 5rem;
     border: none;
     border-radius: 5px;
     box-shadow: 1px 1px 6px #0000001c;
@@ -102,7 +95,7 @@ body {
 }
 
 .input-box input:focus-visible {
-    outline: 1px solid #00d092;
+    outline: 1px solid #7b2cbf;
 }
 
 .input-box label{
@@ -121,7 +114,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #d7ebe1;
+    background-color: #fff;
     padding: 1rem;
 }
 
@@ -129,25 +122,26 @@ body {
     width: 31rem;
 }
 
-.continue-button button {
+.login-button {
     width: 100%;
+    font-size: 0.9rem;
+    margin-top: 0rem;
     border: none;
-    background-color: #40f6bf;
-    padding: 0.55rem;
+    background: linear-gradient(to left, #7b2cbf, #fca311);
+    color: #000;
+    padding: 0.6rem;
     border-radius: 5px;
     cursor: pointer;
+    transition:all 0.2s ease-in;
 }
 
-.continue-button button:hover {
-    background-color: #403ebff1
+.login-button:hover {
+    background: linear-gradient(to right, #7b2cbf, #fca311); 
+    color: #202020;
+    letter-spacing: 0.5px;
+    font-size: 0.95rem;
 }
 
-.continue-button button a {
-    text-decoration:  none;
-    font-size: 0.93rem;
-    font-weight: 500;
-    color: #000000;
-}
 
 @media screen and (max-width: 1220px){
     .form-image{
