@@ -20,26 +20,30 @@
                     <div class="title">
                         <h2> Cadastre-se</h2>
                     </div>
-
+                    
                     <div class="login-button">
                         <a href="../Login/login.html"> Entrar </a> 
                     </div>
+
                 </div>
 
+                <div id="error"></div>
+                <div id="success"></div>
+                
                 <div class="input-group"> 
                     <div class="input-box">
-                        <label for="nome">Nome*</label>
-                        <input type="text" id="nome" name="nome" maxlength="15" minlength="3" placeholder="Digite seu nome" required>
+                        <label for="name">Nome*</label>
+                        <input type="text" id="name" name="name" maxlength="15" minlength="3" placeholder="Digite seu nome" required>
                     </div>
 
                     <div class="input-box">
-                        <label for="lastname">Sobrenome*</label>
-                        <input type="text" id="lastname" name="lastname" placeholder="Digite seu sobrenome" maxlength="35" minlength="3"required>
+                        <label for="sobrenome">Sobrenome*</label>
+                        <input type="text" id="sobrenome" name="sobrenome" placeholder="Digite seu sobrenome" maxlength="35" minlength="3"required>
                     </div>
 
                     <div class="input-box">
                         <label for="cpf">CPF*</label>
-                        <input type="text" id="cpf" name="cpf" pattern="(\d{3}\.?\d{3}\.?\d{3}-?\d{2})"" placeholder="Digite seu CPF" required>
+                        <input type="text" id="cpf" name="cpf" pattern="(\d{3}\.?\d{3}\.?\d{3}-?\d{2})" placeholder="Digite seu CPF" required>
                     </div>
 
                     <div class="input-box">
@@ -59,13 +63,14 @@
                     </div>
 
                     <div class="input-box">
-                        <label for="password">Senha*</label>
-                        <input type="password" id="password" name="password" placeholder="Exemplo123"  pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}" required oninvalid="this.setCustomValidity('Minimo de 6 caracteres, contendo letras maiusculas, minusculas e numeros ')" >
+                        <label id="labelPass" for="password">Senha*</label>
+                        <input type="password" id="password" name="password" placeholder="Exemplo123"  required >
+                        <!-- <input type="password" id="password" name="password" placeholder="Exemplo123" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}" required oninvalid="this.setCustomValidity('Minimo de 6 caracteres, contendo letras maiusculas, minusculas e numeros ')" > -->
                     </div>
 
                     <div class="input-box">
-                        <label for="cpassword">Confirme sua senha*</label>
-                        <input type="password" id="cpassword" name="cpassword" placeholder="Confirme" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}" required required oninvalid="this.setCustomValidity('Deve conter no minimo 6 caracteres, contendo letras maiusculas, minusculas e numeros ')">
+                        <label id="labelcPass"for="cpassword">Confirme sua senha*</label>
+                        <input type="password" id="cpassword" name="cpassword" placeholder="Confirme" required>
                     </div>
                 </div>
 
@@ -96,10 +101,87 @@
                         </div>
                     </div>
                 </div>
-                    <input class="continue-button" type="submit" value="Cadastrar">
+                    <input onclick="cadastrar()" class="continue-button" type="submit" value="Cadastrar">
             </form>
         </div>
     </div>
+    <script>
+
+        let nome = document.querySelector('#name');
+        let sobrenome = document.querySelector('#sobrenome');
+        let cpf = document.querySelector('#cpf');
+        let email = document.querySelector('#email');
+
+        let labelSenha = document.querySelector('#labelPass');
+        let senha = document.querySelector('#password');
+        let checksenha = false;
+        let labelConfirma = document.querySelector('#labelcPass');
+        let confirma = document.querySelector('#cpassword');
+        let checkConfirma = false;
+        let error = document.querySelector('#error');
+        let success = document.querySelector('#success');
+
+
+        senha.addEventListener('keyup', () => {
+            if (senha.value.length >5 && senha.value.match(/[a-z]+/) && senha.value.match(/[A-Z]+/) && senha.value.match(/[1-9]+/)){  
+                    labelSenha.setAttribute('style', 'color: #000000c0');
+                    labelSenha.innerHTML = 'Senha*';
+                    senha.setAttribute('style', 'outline: 1px solid #7b2cbf');
+                    checksenha = false;      
+                } else {
+                    labelSenha.setAttribute('style', 'color: red');
+                    labelSenha.innerHTML = 'Minimo de 6 caracteres contendo:<br> Maíusculas, Minusculas e Digitos';
+                    senha.setAttribute('style', 'outline: 1px solid red');  
+                    checksenha = true;
+                }
+        });
+
+        confirma.addEventListener('keyup', () => {
+            if (senha.value != confirma.value){
+                labelConfirma.setAttribute('style', 'color: red');
+                labelConfirma.innerHTML = 'As senha não conferem';
+                confirma.setAttribute('style', 'outline: 1px solid red');
+                checkConfirma = false;  
+            } else {
+                labelConfirma.setAttribute('style', 'color: #000000c0');
+                labelConfirma.innerHTML = 'Confirme sua senha*';
+                confirma.setAttribute('style', 'outline: 1px solid #7b2cbf');
+                checkConfirma = true;  
+            }
+        });
+
+        function cadastrar(){
+            if(checksenha || checkConfirma) {
+                let listaUser = JSON.parse(localStorage.getItem('listaUser') || '[]')
+
+                listaUser.push(
+                    {
+                        nome: nome.value,
+                        sobrenome: sobrenome.value,
+                        cpf: cpf.value,
+                        email: email.value,
+                        senha: senha.value
+                    }
+                )
+
+                localStorage.setItem('listaUser', JSON.stringify(listaUser));
+                const newpage = window.location.href =  ".../Login/login.html";
+
+
+                success.setAttribute('style', 'display: block');
+                success.innerHTML = 'Cadastrando novo usuário..>'
+                error.setAttribute('style', 'display: none');
+                error.innerHTML = '';
+            } else {
+                error.setAttribute('style', 'display: block');
+                error.innerHTML = 'Oops, verifique se preencheu todos os campos corretamente..'
+                success.setAttribute('style', 'display: none');
+                success.innerHTML = '';
+            }
     
+        }
+
+        
+    </script>
 </body>
 </html>

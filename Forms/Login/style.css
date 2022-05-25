@@ -165,11 +165,19 @@ body {
         margin-top: 0rem;
         margin-bottom: 1rem;
         display: flex;
+        justify-content:space-around;
 
     }
 
-    .input-group{
-        max-height: 18rem;
+    .input-group input {
+        /* max-height: 18rem; */
+        /* flex-direction: column; */
+        max-height: 18em;
+        /* padding-right: 5rem;
+        padding-left: 0.5rem; */
+        flex-wrap: nowrap;
+        padding-right: 5rem;
+        padding-left: 0.5rem;
     }
 
 } 

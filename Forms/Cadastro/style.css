@@ -17,7 +17,7 @@ body {
 
 .container{
     width: 80%;
-    height: 80vh;
+    height: 85vh;
     display: flex;
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.212);
 }
@@ -85,6 +85,26 @@ body {
     border-radius: 30px;
 }
 
+.form #error{
+    text-align: center;
+    color: #ff0000;
+    background-color: #ffbbbb;
+    padding: 10px;
+    border-radius: 5px;
+    display: none;
+}
+.form #success{
+    text-align: center;
+    color: #00bb00;
+    background-color: #bbffbe;
+    padding: 10px;
+    border-radius: 5px;
+    display: none;
+}
+
+#msgSuccess{
+
+}
 .input-group {
     display: flex;
     flex-wrap: wrap;
@@ -95,7 +115,7 @@ body {
 .input-box {
     display: flex;
     flex-direction: column;
-    margin-bottom: 0.7rem;   
+    margin-bottom: 0.3rem;   
 }
 
 .input-box input {
