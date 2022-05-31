@@ -14,7 +14,7 @@
         </div>
 
         <div class="form">
-            <form action="#">
+            <form action="#" id="formulario" onsubmit="cadastrar(event)">
                 <div class="form-header">
 
                     <div class="title">
@@ -101,11 +101,12 @@
                         </div>
                     </div>
                 </div>
-                    <input onclick="cadastrar()" class="continue-button" type="submit" value="Cadastrar">
+                    <input class="continue-button" type="submit" value="Cadastrar">
             </form>
         </div>
     </div>
     <script>
+        let form = document.getElementById('formulario');
 
         let nome = document.querySelector('#name');
         let sobrenome = document.querySelector('#sobrenome');
@@ -127,12 +128,12 @@
                     labelSenha.setAttribute('style', 'color: #000000c0');
                     labelSenha.innerHTML = 'Senha*';
                     senha.setAttribute('style', 'outline: 1px solid #7b2cbf');
-                    checksenha = false;      
+                    checksenha = true;      
                 } else {
                     labelSenha.setAttribute('style', 'color: red');
                     labelSenha.innerHTML = 'Minimo de 6 caracteres contendo:<br> Maíusculas, Minusculas e Digitos';
                     senha.setAttribute('style', 'outline: 1px solid red');  
-                    checksenha = true;
+                    checksenha = false;
                 }
         });
 
@@ -150,35 +151,44 @@
             }
         });
 
-        function cadastrar(){
-            if(checksenha || checkConfirma) {
-                let listaUser = JSON.parse(localStorage.getItem('listaUser') || '[]')
+        function cadastrar(event){
+            event.preventDefault();
+            form.reportValidity();
+            // if(senha.value == confirma.value) 
+             if (checksenha && checkConfirma) {
+                if (senha.value === confirma.value){
+                    let listaUser = JSON.parse(localStorage.getItem('listaUser') || '[]')
 
-                listaUser.push(
-                    {
-                        nome: nome.value,
-                        sobrenome: sobrenome.value,
-                        cpf: cpf.value,
-                        email: email.value,
-                        senha: senha.value
-                    }
-                )
+                    listaUser.push(
+                        {
+                            nome: nome.value,
+                            sobrenome: sobrenome.value,
+                            cpf: cpf.value,
+                            email: email.value,
+                            senha: senha.value
+                        }
+                    )
 
-                localStorage.setItem('listaUser', JSON.stringify(listaUser));
-                const newpage = window.location.href =  ".../Login/login.html";
+                    localStorage.setItem('listaUser', JSON.stringify(listaUser));
 
+                    success.setAttribute('style', 'display: block');
+                    success.innerHTML = 'Cadastrando novo usuário..'
+                    error.setAttribute('style', 'display: none');
 
-                success.setAttribute('style', 'display: block');
-                success.innerHTML = 'Cadastrando novo usuário..>'
-                error.setAttribute('style', 'display: none');
-                error.innerHTML = '';
-            } else {
+                    setTimeout(()=>{
+                        window.location.href = "../Login/login.html";  
+                    },1500)
+                    
+                } 
+            }
+
+            else {
                 error.setAttribute('style', 'display: block');
                 error.innerHTML = 'Oops, verifique se preencheu todos os campos corretamente..'
                 success.setAttribute('style', 'display: none');
                 success.innerHTML = '';
             }
-    
+            // window.location.href = "/Forms/Login/login.html";
         }
 
         
