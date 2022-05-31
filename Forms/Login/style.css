@@ -70,6 +70,15 @@ body {
     border-radius: 20px;
 }
 
+.form #error{
+    text-align: center;
+    color: #ff0000;
+    background-color: #ffbbbb;
+    padding: 10px;
+    border-radius: 5px;
+    display: none;
+}
+
 .input-group {
     display:block;
     /* justify-content: space-between; */
