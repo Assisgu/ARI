@@ -1,31 +1,161 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Index</title>
+    <link rel="stylesheet" href="index.css">
 </head>
+
 <body>
-    <h1 id="logado">  </h1>
-<button onclick="sair()">Sair</button>
+    <header>
+        <h1> VIDA </h1>
+        <nav>
+            <ul>
+                <li id="logado"> </li>
+                <!-- <li><a href="#"> Home </a> </li> -->
+                <li><a onclick="sair()"> Sair </a> </li>
+
+
+            </ul>
+        </nav>
+    </header>
+
+    <main class="main">
+
+        <!-- Form post-->
+        <div class="novoPost">
+            <div class="postHeader">
+                <div class="imgUser"> </div>
+                <div class="nameUser"> Gustavo </div>
+            </div>
+            <form action="" class="formulario">
+                <textarea name="textarea" placeholder="No que você está pensando ?"></textarea>
+
+                <div class="buttons">
+                    <div class="icons">
+                        <button class="btnForm"><img src="../assets/img/imagem.png" alt="adicionar uma imagem"></button>
+                        <button class="btnForm"><img src="../assets/img/video.png" alt="adicionar um video"></button>
+                        <button class="btnForm"><img src="../assets/img/microfone.png"
+                                alt="adicionar um audio"></button>
+                        <button class="btnForm"><img src="../assets/img/desenho.png"
+                                alt="adicionar um desenho"></button>
+                    </div>
+                    <!-- <button type="submit" class="btnSubmit">Publicar</button> -->
+                    <input class="btnSubmit" type="submit" value="Publicar">
+                </div>
+            </form>
+        </div>
+
+        <ul class="posts">
+            <li class="post">
+                <div class="postHeaderUser">
+                    <div class="postImgUser"></div>
+
+                    <div class="postNameHour">
+                        <strong>Gustavo</strong>
+                        <p> 22h</p>
+                    </div>
+                </div>
+
+                <p>
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
+                    industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type
+                    and scrambled it to make a type specimen book. It has survived not only five centuries, but also the
+                    leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s
+                    with the release of Letraset
+                </p>
+
+                <div class="postAction">
+                    <button type="button" class="filesPost"><img src="../assets/img/amei.png" alt="Amei"></button>
+                    <button type="button" class="filesPost"><img src="../assets/img/feliz.png" alt="Feliz"></button>
+                    <button type="button" class="filesPost"><img src="../assets/img/triste.png" alt="Triste"></button>
+                    <button type="button" class="filesPost"><img src="../assets/img/bravo.png" alt="Bravo"></button>
+
+                </div>
+
+            </li>
+
+            <li class="post">
+                <div class="postHeaderUser">
+                    <div class="postImgUser"></div>
+
+                    <div class="postNameHour">
+                        <strong class="logado">Gustavo</strong>
+                        <p> 22h</p>
+                    </div>
+                </div>
+
+                <p>
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
+                    industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type
+                    and scrambled it to make a type specimen book. It has survived not only five centuries, but also the
+                    leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s
+                    with the release of Letraset
+                </p>
+
+                <div class="postAction">
+                    <button type="button" class="filesPost"><img src="../assets/img/amei.png" alt="Amei"></button>
+                    <button type="button" class="filesPost"><img src="../assets/img/feliz.png" alt="Feliz"></button>
+                    <button type="button" class="filesPost"><img src="../assets/img/triste.png" alt="Triste"></button>
+                    <button type="button" class="filesPost"><img src="../assets/img/bravo.png" alt="Bravo"></button>
+
+                </div>
+
+            </li>
+
+            <li class="post">
+                <div class="postHeaderUser">
+                    <div class="postImgUser"></div>
+
+                    <div class="postNameHour">
+                        <strong>Gustavo</strong>
+                        <p> 22h</p>
+                    </div>
+                </div>
+
+                <p>
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
+                    industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type
+                    and scrambled it to make a type specimen book. It has survived not only five centuries, but also the
+                    leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s
+                    with the release of Letraset
+                </p>
+
+                <div class="postAction">
+                    <button type="button" class="filesPost"><img src="../assets/img/amei.png" alt="Amei"></button>
+                    <button type="button" class="filesPost"><img src="../assets/img/feliz.png" alt="Feliz"></button>
+                    <button type="button" class="filesPost"><img src="../assets/img/triste.png" alt="Triste"></button>
+                    <button type="button" class="filesPost"><img src="../assets/img/bravo.png" alt="Bravo"></button>
+
+                </div>
+
+            </li>
+        </ul>
+
+
+
+    </main>
 
     <script>
 
         let logado = document.querySelector('#logado')
         let userLogado = JSON.parse(localStorage.getItem('userLogado'))
-        logado.innerHTML = `Dormir ${userLogado.nome} ...`
+        logado.innerHTML = `Olá ${userLogado.nome}`
 
-        if(localStorage.getItem('token') == null){
+        if (localStorage.getItem('token') == null) {
             alert('Você precisa estar logado para acessar essa página')
-            window.location.href="../Forms/Login/login.html"
+            window.location.href = "../Forms/Login/login.html"
         }
 
-        function sair(){
+        function sair() {
             localStorage.removeItem('token');
             localStorage.removeItem('userLogado');
-            window.location.href="../Forms/Login/login.html"
+            window.location.href = "../Forms/Login/login.html"
         }
     </script>
 </body>
+
 </html>
