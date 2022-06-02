@@ -68,16 +68,15 @@ a:hover{
 
 .novoPost{
     width: 100%;
-    height:230px;
+    height:250px;
 
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     margin: 3rem 0;
     padding: 1.5rem;
-
-    background-color: rgb(247, 247, 247);
-    border-radius: 4px;
+    background-color: #fff;
+    border-radius: 12px;
     box-shadow: 1px 0 3px rgba(0, 0, 0, 0.2);
 }
 
@@ -89,17 +88,25 @@ a:hover{
 }
 
 .novoPost .postHeader .imgUser {
-    width: 55px;
-    height: 55px;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
     background-color: #fca311;
+} 
+
+.novoPost .postHeader .imgUser img {
+    width: 100%;
+    height: 100%;
 }
 
+.novoPost .postHeader .imgUser img:hover{
+    width: 110%;
+    height: 110%;
+}
 .novoPost .postHeader 
 .nameUser{
     font-size: 16px;
     margin-left: 10px;
-
     font-weight: bold;
     color: #7b2cbf;
 }
@@ -111,10 +118,10 @@ a:hover{
 }
 
 .novoPost form textarea{
-    background-color: #f7f7f7;
+    background-color: #00000007;
     margin: 5px 0;
-    padding: 25px;
-    border-radius: 10px;
+    padding: 35px;
+    border-radius: 12px;
     resize: none;
     border: none;
     outline: none;
@@ -123,6 +130,7 @@ a:hover{
 
 .novoPost form .buttons{
     display: flex;
+    margin-top: 1vh;
     align-items: center;
     justify-content: space-between;
 }
@@ -144,8 +152,13 @@ a:hover{
     cursor: pointer;
     width: 30px;
 }
+
 .novoPost form .buttons .icons button img{
-    width: 23px;
+    width: 18px;
+}
+
+.novoPost form .buttons .icons button img:hover{
+    width: 28px;
 }
 
 .novoPost form .btnSubmit {
@@ -167,42 +180,51 @@ a:hover{
     font-size: 0.93rem;
 }
 
-ul.posts li.post{
+.posts .post{
     margin-bottom: 50px;
     width: 100%;
-    background: #f6f2f2;
-    border-radius: 4px;
+    background: #fff;
+    border-radius: 12px;
     padding: 25px;
     box-shadow: 1px 0 8px rgba(0, 0, 0, 0.1);
 }
 
-ul.posts li .postHeaderUser{
+.posts .postHeaderUser{
     display: flex;
     align-items: center;
 }
 
-ul.posts li .postHeaderUser .postImgUser {
-    width: 45px;
-    height: 45px;
+.posts .postHeaderUser .postImgUser {
+    width: 55px;
+    height: 55px;
     border-radius: 50%;
     background-color: #fca311;
 }
+.posts .postHeaderUser .postImgUser img {
+    width: 100%;
+    height: 100%;
+} 
 
-ul.posts li .postHeaderUser .postNameHour{
+.posts .postHeaderUser .postImgUser img:hover {
+    width: 110%;
+    height: 110%;
+} 
+
+.posts .postHeaderUser .postNameHour{
     margin-left:1rem;
 }
 
-ul.posts li .postHeaderUser strong {
+.posts .postHeaderUser strong {
     color: #670bb8;
 }
 
-ul.posts li .postHeaderUser p {
-    color: #a4a0a0;
+.posts  .postHeaderUser p {
+    color: #00000090;
     font-weight: 400;
     font-size: 14px;
 }
 
-ul.posts li.post >p{
+.posts .post >p{
     width: 100%;
     margin: 20px 0;
     font-weight: 300;
@@ -211,13 +233,13 @@ ul.posts li.post >p{
 
 }
 
-ul.posts li.post .postAction{
+.posts .post .postAction{
     display: flex;
     align-items: center;
     justify-content: end;
 }
 
-ul.posts li.post button.filesPost{
+.posts .post button.filesPost{
 
     outline: none;
     display: flex;
@@ -225,17 +247,17 @@ ul.posts li.post button.filesPost{
     justify-content: center;
     margin-right: 15px;
     border: 0;
-    background-color: #f7f7f7;
+    background-color: #fff;
     cursor: pointer;
     width: 35px;
     height: 35px;
     
 }
 
-ul.posts li.post button.filesPost img{
+.posts .post button.filesPost img{
  width: 60%;
 }
 
-ul.posts li.post button.filesPost img:hover{
+.posts .post button.filesPost img:hover{
 width: 100%;
 }

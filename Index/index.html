@@ -14,11 +14,9 @@
         <h1> VIDA </h1>
         <nav>
             <ul>
-                <li id="logado"> </li>
+                <li id="logado"></li>
                 <!-- <li><a href="#"> Home </a> </li> -->
                 <li><a onclick="sair()"> Sair </a> </li>
-
-
             </ul>
         </nav>
     </header>
@@ -28,11 +26,11 @@
         <!-- Form post-->
         <div class="novoPost">
             <div class="postHeader">
-                <div class="imgUser"> </div>
-                <div class="nameUser"> Gustavo </div>
+                <div class="imgUser"><img src="../assets/img/avatar.svg"> </div>
+                <div class="nameUser" id="nameUser"> Gustavo </div>
             </div>
-            <form action="" class="formulario">
-                <textarea name="textarea" placeholder="No que você está pensando ?"></textarea>
+            <form action="#" class="formulario" id="formulario" >
+                <textarea name="textarea" id="textarea" placeholder="No que você está pensando ?"></textarea>
 
                 <div class="buttons">
                     <div class="icons">
@@ -49,91 +47,7 @@
             </form>
         </div>
 
-        <ul class="posts">
-            <li class="post">
-                <div class="postHeaderUser">
-                    <div class="postImgUser"></div>
-
-                    <div class="postNameHour">
-                        <strong>Gustavo</strong>
-                        <p> 22h</p>
-                    </div>
-                </div>
-
-                <p>
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
-                    industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type
-                    and scrambled it to make a type specimen book. It has survived not only five centuries, but also the
-                    leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s
-                    with the release of Letraset
-                </p>
-
-                <div class="postAction">
-                    <button type="button" class="filesPost"><img src="../assets/img/amei.png" alt="Amei"></button>
-                    <button type="button" class="filesPost"><img src="../assets/img/feliz.png" alt="Feliz"></button>
-                    <button type="button" class="filesPost"><img src="../assets/img/triste.png" alt="Triste"></button>
-                    <button type="button" class="filesPost"><img src="../assets/img/bravo.png" alt="Bravo"></button>
-
-                </div>
-
-            </li>
-
-            <li class="post">
-                <div class="postHeaderUser">
-                    <div class="postImgUser"></div>
-
-                    <div class="postNameHour">
-                        <strong class="logado">Gustavo</strong>
-                        <p> 22h</p>
-                    </div>
-                </div>
-
-                <p>
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
-                    industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type
-                    and scrambled it to make a type specimen book. It has survived not only five centuries, but also the
-                    leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s
-                    with the release of Letraset
-                </p>
-
-                <div class="postAction">
-                    <button type="button" class="filesPost"><img src="../assets/img/amei.png" alt="Amei"></button>
-                    <button type="button" class="filesPost"><img src="../assets/img/feliz.png" alt="Feliz"></button>
-                    <button type="button" class="filesPost"><img src="../assets/img/triste.png" alt="Triste"></button>
-                    <button type="button" class="filesPost"><img src="../assets/img/bravo.png" alt="Bravo"></button>
-
-                </div>
-
-            </li>
-
-            <li class="post">
-                <div class="postHeaderUser">
-                    <div class="postImgUser"></div>
-
-                    <div class="postNameHour">
-                        <strong>Gustavo</strong>
-                        <p> 22h</p>
-                    </div>
-                </div>
-
-                <p>
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
-                    industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type
-                    and scrambled it to make a type specimen book. It has survived not only five centuries, but also the
-                    leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s
-                    with the release of Letraset
-                </p>
-
-                <div class="postAction">
-                    <button type="button" class="filesPost"><img src="../assets/img/amei.png" alt="Amei"></button>
-                    <button type="button" class="filesPost"><img src="../assets/img/feliz.png" alt="Feliz"></button>
-                    <button type="button" class="filesPost"><img src="../assets/img/triste.png" alt="Triste"></button>
-                    <button type="button" class="filesPost"><img src="../assets/img/bravo.png" alt="Bravo"></button>
-
-                </div>
-
-            </li>
-        </ul>
+        <div class="posts" id="posts"> </div>
 
 
 
@@ -141,14 +55,87 @@
 
     <script>
 
-        let logado = document.querySelector('#logado')
-        let userLogado = JSON.parse(localStorage.getItem('userLogado'))
-        logado.innerHTML = `Olá ${userLogado.nome}`
-
         if (localStorage.getItem('token') == null) {
             alert('Você precisa estar logado para acessar essa página')
             window.location.href = "../Forms/Login/login.html"
         }
+
+        let userLogado = JSON.parse(localStorage.getItem('userLogado'));
+
+        let logado = document.getElementById('logado');
+        logado.innerHTML = `Olá ${userLogado.nome}`;
+        let nome = document.getElementById('nameUser');
+        nome.innerHTML = `${userLogado.nome}`
+
+        class Posts {
+            constructor(form, textArea, posts) {
+                this.form = document.getElementById(form);
+                this.textarea = document.getElementById(textArea);
+                this.posts = document.getElementById(posts);
+                this.addSubmit();
+            }
+
+            onSubmit(func) {
+                this.form.addEventListener('submit', func)
+            }
+
+            postValidate(valor){
+                if(valor === ''|| valor === null || valor === undefined  || valor.length < 3 ){
+                    return false;
+                }
+                return true;
+            }
+
+            getTime(){
+                const time = new Date();
+                const date = time.getDay();
+                const month = time.getMonth();
+                const year = time.getFullYear();
+                const hour = time.getHours();
+                const minutes = time.getMinutes();
+
+                return `${date}/${month}/${year} - ${hour}h${minutes}min`
+            }
+
+            addSubmit() {
+
+                const submit = (event) => {
+                    event.preventDefault();
+
+                     if(this.postValidate(this.textarea.value)) {
+
+                        const time = this.getTime();
+                        let novoPost = document.createElement('div');
+                        novoPost.classList.add('post');
+                        novoPost.innerHTML = `
+                                    <div class="postHeaderUser">
+                                        <div class="postImgUser"><img src="../assets/img/avatar.svg"></div>
+                                        <div class="postNameHour">
+                                            <strong>${userLogado.nome}</strong>
+                                            <p>${time}</p>
+                                        </div>
+                                    </div>
+                                    <p>
+                                        ${this.textarea.value}
+                                    </p>
+                                    <div class="postAction">
+                                        <button type="button" class="filesPost"><img src="../assets/img/amei.png" alt="Amei"></button>
+                                        <button type="button" class="filesPost"><img src="../assets/img/feliz.png" alt="Feliz"></button>
+                                        <button type="button" class="filesPost"><img src="../assets/img/triste.png" alt="Triste"></button>
+                                        <button type="button" class="filesPost"><img src="../assets/img/bravo.png" alt="Bravo"></button>
+                                    </div>`;
+                        this.posts.append(novoPost);
+                        this.textarea.value = "";
+
+                    }   else {
+                            alert ("Para fazer uma postagem é necessário que escreva algo  válido");
+                        }
+                } 
+                this.onSubmit(submit);
+            }
+        }
+
+        const postForm = new Posts('formulario', 'textarea', 'posts');
 
         function sair() {
             localStorage.removeItem('token');
