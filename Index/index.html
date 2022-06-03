@@ -24,7 +24,7 @@
     <main class="main">
 
         <!-- Form post-->
-        <div class="novoPost">
+        <div class="postNovo">
             <div class="postHeader">
                 <div class="imgUser"><img src="../assets/img/avatar.svg"> </div>
                 <div class="nameUser" id="nameUser"> Gustavo </div>
@@ -34,58 +34,102 @@
 
                 <div class="buttons">
                     <div class="icons">
-                        <button class="btnForm"><img src="../assets/img/imagem.png" alt="adicionar uma imagem"></button>
-                        <button class="btnForm"><img src="../assets/img/video.png" alt="adicionar um video"></button>
-                        <button class="btnForm"><img src="../assets/img/microfone.png"
-                                alt="adicionar um audio"></button>
-                        <button class="btnForm"><img src="../assets/img/desenho.png"
-                                alt="adicionar um desenho"></button>
+
+                        <input type="file" id="fileImage" name="fileImage" accept="image/*"> 
+                            <img src="../assets/img/imagem.png" alt="adicionar uma imagem" id="imagemInput">
+
+                        <input type="file" id="fileVideo" name="fileVideo" accept="video/*"> 
+                            <img src="../assets/img/video.png" alt="adicionar um video" id="videoInput">
+
+                        <input type="file" id="fileAudio" name="fileAudio" accept="audio/*"> 
+                            <img src="../assets/img/microfone.png" alt="adicionar um audio" id="audioInput">
+
+                            <img src="../assets/img/desenho.png" alt="adicionar um desenho">
+
                     </div>
-                    <!-- <button type="submit" class="btnSubmit">Publicar</button> -->
                     <input class="btnSubmit" type="submit" value="Publicar">
                 </div>
             </form>
         </div>
-
         <div class="posts" id="posts"> </div>
 
-
+        <!-- <img src="" alt="Campo de imagem" id="postImagem"> -->
 
     </main>
 
     <script>
 
+        //Verifica se usuário está logado
         if (localStorage.getItem('token') == null) {
             alert('Você precisa estar logado para acessar essa página')
             window.location.href = "../Forms/Login/login.html"
         }
-
+        //Salva os dados do usuário logado em userLogado
         let userLogado = JSON.parse(localStorage.getItem('userLogado'));
-
+        //Passa o nome do usuário para mostrar na tela
         let logado = document.getElementById('logado');
         logado.innerHTML = `Olá ${userLogado.nome}`;
         let nome = document.getElementById('nameUser');
         nome.innerHTML = `${userLogado.nome}`
 
+
+        //Config para selecionar a image. Ao clicar na imagem, atribui click no input.
+        let imagem = document.getElementById('imagemInput');
+        let fileIamge = document.getElementById('fileImage');
+        imagem.addEventListener('click', () => { 
+            fileIamge.click();
+        });
+
+         //Config para selecionar video. Ao clicar no video, atribui click no input.
+         let video = document.getElementById('videoInput');
+         let fileVideo = document.getElementById('fileVideo');
+         video.addEventListener('click', () => { 
+             fileVideo.click();
+         });
+
+        //Config para selecionar video. Ao clicar no video, atribui click no input.
+         let audio = document.getElementById('audioInput');
+         let fileAudio = document.getElementById('fileAudio');
+         audio.addEventListener('click', () => { 
+             fileAudio.click();
+         });
+
+        // const fileImage = document.querySelector("#fileImage");
+        // fileIamge.mostrar = false;
+        // fileImage.addEventListener("change", () => {
+        //     const aux = new FileReader();
+        //     aux.addEventListener("load", () => {
+        //         const img = aux.result;
+        //         document.querySelector("postImagem").show = true;
+        //         document.querySelector("postImagem").src = img;
+        //     });
+        //     aux.readAsDataURL(this.files[0]);
+        // })
+
+
+        //classe de Posts
         class Posts {
-            constructor(form, textArea, posts) {
+            // constructor(form, textArea, posts, imagem) {
+                constructor(form, textArea, posts){
                 this.form = document.getElementById(form);
                 this.textarea = document.getElementById(textArea);
                 this.posts = document.getElementById(posts);
+                //this.imagem = document.getElementById(imagem);
                 this.addSubmit();
             }
 
-            onSubmit(func) {
+            submitForm(func) {
                 this.form.addEventListener('submit', func)
             }
 
             postValidate(valor){
-                if(valor === ''|| valor === null || valor === undefined  || valor.length < 3 ){
+                if(valor == ''|| valor.length < 3 ){
                     return false;
                 }
                 return true;
             }
 
+            //Pegando data e hora do Post
             getTime(){
                 const time = new Date();
                 const date = time.getDay();
@@ -93,8 +137,7 @@
                 const year = time.getFullYear();
                 const hour = time.getHours();
                 const minutes = time.getMinutes();
-
-                return `${date}/${month}/${year} - ${hour}h${minutes}min`
+                return `${date}/${month}/${year} | ${hour}h${minutes}min`
             }
 
             addSubmit() {
@@ -102,12 +145,14 @@
                 const submit = (event) => {
                     event.preventDefault();
 
+                    //Se possuir valor no textarea cria um post
                      if(this.postValidate(this.textarea.value)) {
-
-                        const time = this.getTime();
-                        let novoPost = document.createElement('div');
-                        novoPost.classList.add('post');
-                        novoPost.innerHTML = `
+                        //pega o tempo e data atual
+                        const time = this.getTime(); 
+                        //criando uma nova div e inserindo um post na pagina
+                        let postNovo = document.createElement('div');
+                        postNovo.classList.add('post');
+                        postNovo.innerHTML = `
                                     <div class="postHeaderUser">
                                         <div class="postImgUser"><img src="../assets/img/avatar.svg"></div>
                                         <div class="postNameHour">
@@ -115,28 +160,36 @@
                                             <p>${time}</p>
                                         </div>
                                     </div>
-                                    <p>
-                                        ${this.textarea.value}
-                                    </p>
-                                    <div class="postAction">
+                                        <p> ${this.textarea.value} </p>
+                                        
+                                        <div class="postAction">
                                         <button type="button" class="filesPost"><img src="../assets/img/amei.png" alt="Amei"></button>
                                         <button type="button" class="filesPost"><img src="../assets/img/feliz.png" alt="Feliz"></button>
                                         <button type="button" class="filesPost"><img src="../assets/img/triste.png" alt="Triste"></button>
                                         <button type="button" class="filesPost"><img src="../assets/img/bravo.png" alt="Bravo"></button>
                                     </div>`;
-                        this.posts.append(novoPost);
+
+                        // if(this.imagem.show) {
+                        //     postNovo.innerHTML += `<img src="${this.imagem.src}" style="width:30%; margin-bottom: 20px;>`
+                        // };
+
+                        this.posts.append(postNovo);
                         this.textarea.value = "";
+                        // this.imagem.src = null;
+                        // this.imagem.show = false;
 
                     }   else {
-                            alert ("Para fazer uma postagem é necessário que escreva algo  válido");
+                            alert ("Para fazer uma postagem é necessário que escreva algo válido");
                         }
                 } 
-                this.onSubmit(submit);
+                this.submitForm(submit);
             }
         }
-
         const postForm = new Posts('formulario', 'textarea', 'posts');
+        // const postForm = new Posts('formulario', 'textarea', 'posts', 'postImagem');
 
+
+        //Logout 
         function sair() {
             localStorage.removeItem('token');
             localStorage.removeItem('userLogado');

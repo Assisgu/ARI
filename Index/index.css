@@ -66,7 +66,7 @@ a:hover{
     margin: 0 auto;
 }
 
-.novoPost{
+.postNovo{
     width: 100%;
     height:250px;
 
@@ -80,30 +80,30 @@ a:hover{
     box-shadow: 1px 0 3px rgba(0, 0, 0, 0.2);
 }
 
-.novoPost .postHeader {
+.postNovo .postHeader {
     display: flex;
     align-items: center;
     justify-content: center;
   
 }
 
-.novoPost .postHeader .imgUser {
+.postNovo .postHeader .imgUser {
     width: 60px;
     height: 60px;
     border-radius: 50%;
     background-color: #fca311;
 } 
 
-.novoPost .postHeader .imgUser img {
+.postNovo .postHeader .imgUser img {
     width: 100%;
     height: 100%;
 }
 
-.novoPost .postHeader .imgUser img:hover{
+.postNovo .postHeader .imgUser img:hover{
     width: 110%;
     height: 110%;
 }
-.novoPost .postHeader 
+.postNovo .postHeader 
 .nameUser{
     font-size: 16px;
     margin-left: 10px;
@@ -111,13 +111,13 @@ a:hover{
     color: #7b2cbf;
 }
 
-.novoPost form{
+.postNovo form{
     display: flex;
     flex-direction: column;
     width: 100%;
 }
 
-.novoPost form textarea{
+.postNovo form textarea{
     background-color: #00000007;
     margin: 5px 0;
     padding: 35px;
@@ -128,21 +128,36 @@ a:hover{
     font-weight: 400;
 }
 
-.novoPost form .buttons{
+.postNovo form .buttons{
     display: flex;
     margin-top: 1vh;
     align-items: center;
     justify-content: space-between;
 }
-.novoPost form .buttons .icons {
-    width: 100px;
+.postNovo form .buttons .icons {
+    width: 150px;
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
 
-.novoPost form .buttons .icons button{ 
-    outline: none;
+.postNovo form .buttons .icons img {
+    cursor: pointer;
+    transition: .2s ease-in-out;
+    width: 24px;
+}
+
+.postNovo form .buttons .icons img:hover {
+    width: 30px;
+
+}
+
+input[type='file']{
+    display: none;
+}
+/*
+.postNovo form .buttons .icons button{ 
+     outline: none; 
     display: flex;
     align-items: center;
     justify-content: center;
@@ -151,17 +166,18 @@ a:hover{
     background-color: #f7f7f7;
     cursor: pointer;
     width: 30px;
-}
+} */
 
-.novoPost form .buttons .icons button img{
+.postNovo form .buttons .icons input img{
     width: 18px;
+
 }
 
-.novoPost form .buttons .icons button img:hover{
+.postNovo form .buttons .icons input img:hover{
     width: 28px;
 }
 
-.novoPost form .btnSubmit {
+.postNovo form .btnSubmit {
     width: 10%;
     font-size: 0.9rem;
     border: none;
@@ -173,7 +189,7 @@ a:hover{
     transition:all 0.2s ease-in;
 }
 
-.novoPost form .btnSubmit:hover{
+.postNovo form .btnSubmit:hover{
     width: 12%;
     background: #670bb8;
     letter-spacing: 0.5px;
