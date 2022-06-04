@@ -196,6 +196,15 @@ input[type='file']{
     font-size: 0.93rem;
 }
 
+
+#displayImage{
+    width: 325px;
+    height: 250px;
+    border: 1px solid black;
+    background-position: center;
+    background-size: cover;
+}
+
 .posts .post{
     margin-bottom: 50px;
     width: 100%;

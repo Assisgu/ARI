@@ -51,6 +51,7 @@
                 </div>
             </form>
         </div>
+        <div id="displayImage"> </div>
         <div class="posts" id="posts"> </div>
 
         <!-- <img src="" alt="Campo de imagem" id="postImagem"> -->
@@ -80,6 +81,17 @@
             fileIamge.click();
         });
 
+        var uploadImg = "";
+        fileImage.addEventListener("change", function(){
+            const reader = new FileReader();
+            reader.addEventListener("load", () => {
+                 uploadImg = reader.result;
+                document.querySelector("#displayImage").style.backgroundImage = `url(${uploadImg})`;
+            });
+            reader.readAsDataURL(this.files[0]);
+        });
+
+
          //Config para selecionar video. Ao clicar no video, atribui click no input.
          let video = document.getElementById('videoInput');
          let fileVideo = document.getElementById('fileVideo');
@@ -93,18 +105,6 @@
          audio.addEventListener('click', () => { 
              fileAudio.click();
          });
-
-        // const fileImage = document.querySelector("#fileImage");
-        // fileIamge.mostrar = false;
-        // fileImage.addEventListener("change", () => {
-        //     const aux = new FileReader();
-        //     aux.addEventListener("load", () => {
-        //         const img = aux.result;
-        //         document.querySelector("postImagem").show = true;
-        //         document.querySelector("postImagem").src = img;
-        //     });
-        //     aux.readAsDataURL(this.files[0]);
-        // })
 
 
         //classe de Posts
