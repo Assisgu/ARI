@@ -32,7 +32,7 @@
 
                 <div class="postmidia">
                     <img id="displayImage">
-                    <!-- <video id=""></video> -->
+                    <video id="displayVideo"></video>
                     <!-- <audio id=""> </audio> -->
                 </div>
 
@@ -67,38 +67,36 @@
         let nome = document.getElementById('nameUser');
         let imagem = document.getElementById('imagemInput');
         let fileIamge = document.getElementById('fileImage');
+        let video = document.getElementById('videoInput');
+        let fileVideo = document.getElementById('fileVideo');
 
         fileImage.mostrar = false;
+        fileVideo.mostrar = false;
 
         //Verifica se usuário está logado
         if (localStorage.getItem('token') == null) {
             alert('Você precisa estar logado para acessar essa página')
             window.location.href = "../Forms/Login/login.html"
         }
-        
+
         //Passa o nome do usuário para mostrar na tela
         logado.innerHTML = `Olá ${userLogado.nome}`;
         nome.innerHTML = `${userLogado.nome}`
 
 
-        // -----------------Imagem --------------------------
+
         imagem.addEventListener('click', () => {
             fileIamge.click();
+        });
+
+        video.addEventListener('click', () => {
+            fileVideo.click();
         });
 
 
 
 
 
-
-        //  //Config para selecionar video. Ao clicar no video, atribui click no input.
-        //  let video = document.getElementById('videoInput');
-        //  let fileVideo = document.getElementById('fileVideo');
-        //  video.addEventListener('click', () => { 
-        //      fileVideo.click();
-        //  });
-
-        // //Config para selecionar video. Ao clicar no video, atribui click no input.
         //  let audio = document.getElementById('audioInput');
         //  let fileAudio = document.getElementById('fileAudio');
         //  audio.addEventListener('click', () => { 
@@ -108,11 +106,12 @@
 
         class Posts {
 
-            constructor(form, textArea, posts, imagem) {
+            constructor(form, textArea, posts, imagem, video) {
                 this.form = document.getElementById(form);
                 this.textarea = document.getElementById(textArea);
                 this.posts = document.getElementById(posts);
                 this.postImage = document.getElementById(imagem);
+                this.postVideo = document.getElementById(video);
                 document.querySelector(".postmidia").style.display = "none";
                 this.addSubmit();
             }
@@ -131,7 +130,7 @@
             getTime() {
                 const time = new Date();
                 const date = time.getDate();
-                const month = time.getMonth() +1;
+                const month = time.getMonth() + 1;
                 const year = time.getFullYear();
                 const hour = time.getHours();
                 const minutes = time.getMinutes();
@@ -141,14 +140,14 @@
             addSubmit() {
                 const submit = (event) => {
                     event.preventDefault();
-                    //Se possuir valor no textarea cria um post
-                    if (this.postValidate(this.textarea.value)) {
+
+                    if (this.postValidate(this.textarea.value)) {//Se possuir valor no textarea cria um post
                         const time = this.getTime(); //pega o tempo e data atual
                         const postNovo = document.createElement('div');//criando uma nova div e inserindo um post na pagina
                         postNovo.classList.add('post');
 
                         let textarea = this.textarea.value;
-                        postNovo.innerHTML = 
+                        postNovo.innerHTML =
                             `
                                 <div class="postHeaderUser">
                                     <div class="postImgUser"><img src="../assets/img/avatar.svg"></div>
@@ -160,14 +159,27 @@
                                         <p> ${textarea} </p>
                                 
                                         `;
-                        if (this.postImage.src != ''){
+                        var aux = 0;
+
+                        if (this.postImage.src.indexOf("data:image") >= 0) {
                             let img = this.postImage.src;
                             postNovo.innerHTML += `<img src="${img}" style="width:30%; margin-bottom: 20px;">`;
+                            aux = 1;
+                            console.log(this.postImage.src);
                         }
+                    
 
-                       
+                        else if (this.postVideo.src.indexOf("data:video") >= 0)  {
+                            let vdo = this.postVideo.src;
+                            postNovo.innerHTML += `<video src="${vdo}" controls style="width:30%; margin-bottom: 20px;"></video>`;
+                            aux = 2;
+                            console.log(this.postVideo.src);
+                        }
+                        
+
+                        console.log(aux);
                         postNovo.innerHTML +=
-                                ` <div class="postAction">
+                            ` <div class="postAction">
                                     <button type="button" class="filesPost"><img src="../assets/img/amei.png" alt="Amei"></button>
                                     <button type="button" class="filesPost"><img src="../assets/img/feliz.png" alt="Feliz"></button>
                                     <button type="button" class="filesPost"><img src="../assets/img/triste.png" alt="Triste"></button>
@@ -178,18 +190,44 @@
 
                         this.posts.append(postNovo);
                         this.postImage.mostrar = false;
+                        this.postImage.src = "";
+                        this.postVideo.mostrar = false;
+                        this.postVideo.src = "";
                         document.querySelector(".postmidia").style.display = "none";
-                        this.postImage.src = null;
                         this.textarea.value = "";
 
-                        
-                        post.push({
-                            user: userLogado.nome,
-                            contentText: textarea,
-                            date: new Date().toLocaleString(),
-                            imagem: base64
-                        })
+                        if (aux == 2) {
+                            post.push({
+
+                                user: userLogado.nome,
+                                contentText: textarea,
+                                date: new Date().toLocaleString(),
+                                video: base64,
+
+                            })
+
+                        } else if (aux == 1) {
+                            post.push({
+
+                                user: userLogado.nome,
+                                contentText: textarea,
+                                date: new Date().toLocaleString(),
+                                imagem: base64,
+
+                            })
+                        } else {
+                            post.push({
+
+                                user: userLogado.nome,
+                                contentText: textarea,
+                                date: new Date().toLocaleString(),
+
+
+                            })
+                        }
+
                         localStorage.setItem("posts", JSON.stringify(post));
+                        // window.Location.reload();
 
                     } else {
                         alert("Para fazer uma postagem é necessário que escreva algo válido");
@@ -198,33 +236,103 @@
                 this.onsubmit(submit);
             }
         }
-        const postForm = new Posts('formulario', 'textarea', 'posts', 'displayImage');
+        const postForm = new Posts('formulario', 'textarea', 'posts', 'displayImage', 'displayVideo');
 
 
         post.slice().reverse().forEach((test) => {
-            document.getElementById('postsLocal').innerHTML +=
-        `
-        <div class="post">
-            <div class="postHeaderUser">
-                <div class="postImgUser"><img src="../assets/img/avatar.svg"></div>
-                    <div class="postNameHour">
-                        <strong>${test.user}</strong>
-                            <p> ${test.date} </p>
-                    </div>
-            </div>
-                <p> ${test.contentText} </p>
-            
-          
-            <img src="${test.imagem}" style="width:30%; margin-bottom: 20px;">
+            if (!test.imagem && !test.video && !test.audio) {
 
-                <div class="postAction">
-                        <button type="button" class="filesPost"><img src="../assets/img/amei.png" alt="Amei"></button>
-                        <button type="button" class="filesPost"><img src="../assets/img/feliz.png" alt="Feliz"></button>
-                        <button type="button" class="filesPost"><img src="../assets/img/triste.png" alt="Triste"></button>
-                        <button type="button" class="filesPost"><img src="../assets/img/bravo.png" alt="Bravo"></button>
-                </div>
-        </div>
-    `;
+                document.getElementById('postsLocal').innerHTML +=
+                    `
+                <div class="post">
+                    <div class="postHeaderUser">
+                        <div class="postImgUser"><img src="../assets/img/avatar.svg"></div>
+                        <div class="postNameHour">
+                            <strong>${test.user}</strong>
+                            <p> ${test.date} </p>
+                            </div>
+                            </div>
+                            <p> ${test.contentText} </p>
+                            <div class="postAction">
+                                <button type="button" class="filesPost"><img src="../assets/img/amei.png" alt="Amei"></button>
+                                <button type="button" class="filesPost"><img src="../assets/img/feliz.png" alt="Feliz"></button>
+                                <button type="button" class="filesPost"><img src="../assets/img/triste.png" alt="Triste"></button>
+                                <button type="button" class="filesPost"><img src="../assets/img/bravo.png" alt="Bravo"></button>
+                                </div>
+                                </div>
+                                `;
+            }
+            else if (test.imagem) {
+
+                document.getElementById('postsLocal').innerHTML +=
+                    `
+                <div class="post">
+                    <div class="postHeaderUser">
+                        <div class="postImgUser"><img src="../assets/img/avatar.svg"></div>
+                        <div class="postNameHour">
+                            <strong>${test.user}</strong>
+                            <p> ${test.date} </p>
+                            </div>
+                            </div>
+                            <p> ${test.contentText} </p>
+                            <img src="${test.imagem}" style="width:30%; margin-bottom: 20px">
+                            <div class="postAction">
+                                <button type="button" class="filesPost"><img src="../assets/img/amei.png" alt="Amei"></button>
+                                <button type="button" class="filesPost"><img src="../assets/img/feliz.png" alt="Feliz"></button>
+                                <button type="button" class="filesPost"><img src="../assets/img/triste.png" alt="Triste"></button>
+                                <button type="button" class="filesPost"><img src="../assets/img/bravo.png" alt="Bravo"></button>
+                                </div>
+                                </div>
+                                `;
+            }
+            if (test.video) {
+
+                document.getElementById('postsLocal').innerHTML +=
+                    `
+                <div class="post">
+                    <div class="postHeaderUser">
+                        <div class="postImgUser"><img src="../assets/img/avatar.svg"></div>
+                        <div class="postNameHour">
+                            <strong>${test.user}</strong>
+                            <p> ${test.date} </p>
+                            </div>
+                            </div>
+                            <p> ${test.contentText} </p>
+                            <video src="${test.video}" controls style="width:80%; margin-bottom: 20px"></video>
+                            
+                            <div class="postAction">
+                                <button type="button" class="filesPost"><img src="../assets/img/amei.png" alt="Amei"></button>
+                                <button type="button" class="filesPost"><img src="../assets/img/feliz.png" alt="Feliz"></button>
+                                <button type="button" class="filesPost"><img src="../assets/img/triste.png" alt="Triste"></button>
+                                <button type="button" class="filesPost"><img src="../assets/img/bravo.png" alt="Bravo"></button>
+                                </div>
+                                </div>
+                                `;
+            }
+            if (test.audio) {
+
+                document.getElementById('postsLocal').innerHTML +=
+                    `
+                <div class="post">
+                    <div class="postHeaderUser">
+                        <div class="postImgUser"><img src="../assets/img/avatar.svg"></div>
+                        <div class="postNameHour">
+                            <strong>${test.user}</strong>
+                            <p> ${test.date} </p>
+                            </div>
+                            </div>
+                            <p> ${test.contentText} </p>
+                            <audio src="${test.audio} "></audio>
+                            
+                            <div class="postAction">
+                                <button type="button" class="filesPost"><img src="../assets/img/amei.png" alt="Amei"></button>
+                                <button type="button" class="filesPost"><img src="../assets/img/feliz.png" alt="Feliz"></button>
+                                <button type="button" class="filesPost"><img src="../assets/img/triste.png" alt="Triste"></button>
+                                <button type="button" class="filesPost"><img src="../assets/img/bravo.png" alt="Bravo"></button>
+                                </div>
+                                </div>
+                                `;
+            }
         })
 
         fileImage.addEventListener("change", function () {
@@ -234,6 +342,18 @@
                 document.querySelector("#displayImage").mostrar = true;
                 document.querySelector(".postmidia").style.display = "flex";
                 document.querySelector("#displayImage").src = uploadImg;
+                base64 = reader.result
+            });
+            reader.readAsDataURL(this.files[0]);
+        });
+
+        fileVideo.addEventListener("change", function () {
+            const reader = new FileReader();
+            reader.addEventListener("load", () => {
+                const uploadVdo = reader.result;
+                document.querySelector("#displayVideo").mostrar = true;
+                document.querySelector(".postmidia").style.display = "flex";
+                document.querySelector("#displayVideo").src = uploadVdo;
                 base64 = reader.result
             });
             reader.readAsDataURL(this.files[0]);
