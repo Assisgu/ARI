@@ -33,7 +33,7 @@
                 <div class="postmidia">
                     <img id="displayImage">
                     <video id="displayVideo"></video>
-                    <!-- <audio id=""> </audio> -->
+                    <audio id="displayAudio"></audio>
                 </div>
 
                 <div class="buttons">
@@ -69,9 +69,12 @@
         let fileIamge = document.getElementById('fileImage');
         let video = document.getElementById('videoInput');
         let fileVideo = document.getElementById('fileVideo');
+        let audio = document.getElementById('audioInput');
+        let fileAudio = document.getElementById('fileAudio')
 
         fileImage.mostrar = false;
         fileVideo.mostrar = false;
+        fileAudio.mostrar = false;
 
         //Verifica se usuário está logado
         if (localStorage.getItem('token') == null) {
@@ -93,25 +96,21 @@
             fileVideo.click();
         });
 
-
-
-
-
-        //  let audio = document.getElementById('audioInput');
-        //  let fileAudio = document.getElementById('fileAudio');
-        //  audio.addEventListener('click', () => { 
-        //      fileAudio.click();
-        //  });
+         audio.addEventListener('click', () => { 
+             fileAudio.click();
+         });
 
 
         class Posts {
 
-            constructor(form, textArea, posts, imagem, video) {
+            constructor(form, textArea, posts, imagem, video, audio) {
                 this.form = document.getElementById(form);
                 this.textarea = document.getElementById(textArea);
                 this.posts = document.getElementById(posts);
                 this.postImage = document.getElementById(imagem);
                 this.postVideo = document.getElementById(video);
+                this.postAudio = document.getElementById(audio);
+
                 document.querySelector(".postmidia").style.display = "none";
                 this.addSubmit();
             }
@@ -160,7 +159,6 @@
                                 
                                         `;
                         var aux = 0;
-
                         if (this.postImage.src.indexOf("data:image") >= 0) {
                             let img = this.postImage.src;
                             postNovo.innerHTML += `<img src="${img}" style="width:30%; margin-bottom: 20px;">`;
@@ -175,9 +173,16 @@
                             aux = 2;
                             console.log(this.postVideo.src);
                         }
-                        
+
+                        else if (this.postAudio.src.indexOf("data:audio") >= 0) {
+                            let aud = this.postAudio.src;
+                             postNovo.innerHTML += `<audio src="${aud}" controls style="width:70%; margin-bottom: 20px;"></audio>`;
+                            aux = 3;
+                            console.log(this.postAudio.src);
+                        }
 
                         console.log(aux);
+
                         postNovo.innerHTML +=
                             ` <div class="postAction">
                                     <button type="button" class="filesPost"><img src="../assets/img/amei.png" alt="Amei"></button>
@@ -193,6 +198,9 @@
                         this.postImage.src = "";
                         this.postVideo.mostrar = false;
                         this.postVideo.src = "";
+                        this.postAudio.mostrar = false;
+                        this.postAudio.src = "";
+
                         document.querySelector(".postmidia").style.display = "none";
                         this.textarea.value = "";
 
@@ -215,14 +223,20 @@
                                 imagem: base64,
 
                             })
+                        } else if (aux == 3){
+                            post.push({
+
+                            user: userLogado.nome,
+                            contentText: textarea,
+                            date: new Date().toLocaleString(),
+                            audio: base64,
+                            })
                         } else {
                             post.push({
 
-                                user: userLogado.nome,
-                                contentText: textarea,
-                                date: new Date().toLocaleString(),
-
-
+                            user: userLogado.nome,
+                            contentText: textarea,
+                            date: new Date().toLocaleString(),
                             })
                         }
 
@@ -236,7 +250,7 @@
                 this.onsubmit(submit);
             }
         }
-        const postForm = new Posts('formulario', 'textarea', 'posts', 'displayImage', 'displayVideo');
+        const postForm = new Posts('formulario', 'textarea', 'posts', 'displayImage', 'displayVideo', 'displayAudio');
 
 
         post.slice().reverse().forEach((test) => {
@@ -322,7 +336,7 @@
                             </div>
                             </div>
                             <p> ${test.contentText} </p>
-                            <audio src="${test.audio} "></audio>
+                            <audio src="${test.audio}"" controls style="width:70%; margin-bottom: 20px"></audio>
                             
                             <div class="postAction">
                                 <button type="button" class="filesPost"><img src="../assets/img/amei.png" alt="Amei"></button>
@@ -354,6 +368,18 @@
                 document.querySelector("#displayVideo").mostrar = true;
                 document.querySelector(".postmidia").style.display = "flex";
                 document.querySelector("#displayVideo").src = uploadVdo;
+                base64 = reader.result
+            });
+            reader.readAsDataURL(this.files[0]);
+        });
+
+        fileAudio.addEventListener("change", function () {
+            const reader = new FileReader();
+            reader.addEventListener("load", () => {
+                const uploadAud = reader.result;
+                document.querySelector("#displayAudio").mostrar = true;
+                document.querySelector(".postmidia").style.display = "flex";
+                document.querySelector("#displayAudio").src = uploadAud;
                 base64 = reader.result
             });
             reader.readAsDataURL(this.files[0]);
