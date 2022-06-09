@@ -192,7 +192,7 @@
                                 </div>
                                 `;
 
-
+                        window.location.reload();
                         this.posts.append(postNovo);
                         this.postImage.mostrar = false;
                         this.postImage.src = "";
@@ -249,8 +249,11 @@
                 }
                 this.onsubmit(submit);
             }
+            
         }
+        
         const postForm = new Posts('formulario', 'textarea', 'posts', 'displayImage', 'displayVideo', 'displayAudio');
+        
 
 
         post.slice().reverse().forEach((test) => {
