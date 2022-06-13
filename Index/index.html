@@ -15,7 +15,6 @@
         <nav>
             <ul>
                 <li id="logado"></li>
-                <!-- <li><a href="#"> Home </a> </li> -->
                 <li><a onclick="sair()"> Sair </a> </li>
             </ul>
         </nav>
@@ -47,9 +46,9 @@
                         <input type="file" id="fileAudio" name="fileAudio" accept="audio/*">
                         <img src="../assets/img/microfone.png" alt="adicionar um audio" id="audioInput">
 
-                        <img src="../assets/img/desenho.png" alt="adicionar um desenho">
+                        <img src="../assets/img/desenho.png" alt="adicionar um desenho" onclick="openCanvas()">
                     </div>
-                    <input class="btnSubmit" type="submit" value="Publicar">
+                    <input class="btnSubmit" type="submit" value="Publicar" onclick="getLocation()">
                 </div>
             </form>
         </div>
@@ -57,6 +56,20 @@
             <div class="posts" id="posts"> </div>
             <div class="posts" id="postsLocal"></div>
         </section>
+
+        <div id="canvasSection" style="display: none;">
+        <div id="canvasBG">
+            <div>
+                <canvas id="canvas" width="500" height="500"></canvas>
+                <button id="save">Salvar</button>
+                <div id="controles">
+                    <div id="black" class="cores" style="background-color: black;"></div>
+                    <div id="orange" class="cores" style="background-color: orange;"></div>
+                    <div id="purple" class="cores" style="background-color: purple;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
     </main>
 
     <script>
@@ -70,7 +83,9 @@
         let video = document.getElementById('videoInput');
         let fileVideo = document.getElementById('fileVideo');
         let audio = document.getElementById('audioInput');
-        let fileAudio = document.getElementById('fileAudio')
+        let fileAudio = document.getElementById('fileAudio');
+        let lat="";
+        let long="";
 
         fileImage.mostrar = false;
         fileVideo.mostrar = false;
@@ -99,7 +114,6 @@
          audio.addEventListener('click', () => { 
              fileAudio.click();
          });
-
 
         class Posts {
 
@@ -151,12 +165,14 @@
                                 <div class="postHeaderUser">
                                     <div class="postImgUser"><img src="../assets/img/avatar.svg"></div>
                                         <div class="postNameHour">
-                                            <strong>${userLogado.nome}</strong>
+                                            <strong>${userLogado.nome} </strong>
                                             <p>${time}</p>
+                                            <p> Lat: <span id="lat">${lat}</span></p>
+                                            <p> Long: <span id="long">${long}</span></p>
                                         </div>
+
                                 </div>
                                         <p> ${textarea} </p>
-                                
                                         `;
                         var aux = 0;
                         if (this.postImage.src.indexOf("data:image") >= 0) {
@@ -267,8 +283,12 @@
                         <div class="postNameHour">
                             <strong>${test.user}</strong>
                             <p> ${test.date} </p>
-                            </div>
-                            </div>
+                            <p> Lat: <span id="lat">${lat}</span></p>
+                            <p> Long: <span id="long">${long}</span></p>
+                        </div>
+
+ 
+                    </div>
                             <p> ${test.contentText} </p>
                             <div class="postAction">
                                 <button type="button" class="filesPost"><img src="../assets/img/amei.png" alt="Amei"></button>
@@ -388,6 +408,116 @@
             reader.readAsDataURL(this.files[0]);
         });
 
+
+        // function getLocation() {
+        //     if ("geolocation" in navigator) {
+        //         navigator.geolocation.watchPosition(locationSucess, locationError)
+        //     } else {
+        //         alert("Erro ao utilizar a localização");
+        //     }
+        // }
+
+        // function locationSucess(data) {
+        //     let latitude = data.coords.latitude;
+        //     let longitude = data.coords.longitude;
+
+        //     document.getElementById("lat").innerHTML =latitude;
+        //     document.getElementById("long").innerHTML =longitude;
+        // }
+
+        // function locationError() {
+        //     alert('Localização não encontrada');
+        // }
+
+
+
+
+const save = document.getElementById('save');
+const canvasBG = document.getElementById('canvasBG');
+const canvasSection = document.getElementById('canvasSection');
+
+const orange = document.getElementById('orange');
+const black = document.getElementById('black');
+const purple = document.getElementById('purple');
+
+function openCanvas(){
+  let canvasSection = document.getElementById('canvasSection');
+  let canvasBG = document.getElementById('canvasBG');
+  canvasBG.style.display="block";
+  canvasSection.style.display='block';
+}
+
+
+
+window.addEventListener("load",()=>{
+    const canvas = document.getElementById('canvas');
+    const context = canvas.getContext('2d');
+    //variables
+    context.strokeStyle='rgb(255,0,0)';
+    let desenhando = false;
+    function startPosition(e){
+        desenhando = true;
+        desenhar(e);
+    }
+    function stopPosition(){
+        desenhando = false;
+        context.beginPath();
+    }
+    function desenhar(e){
+        if(!desenhando){
+            return;
+        }
+        context.lineWidth = 10;
+        context.lineCap = 'round';
+        context.lineTo(e.clientX, e.clientY);
+        context.stroke();
+        context.beginPath();
+        context.moveTo(e.clientX, e.clientY);
+    }
+    
+    //event listeners
+    canvas.addEventListener('mousedown', startPosition);
+    canvas.addEventListener('mouseup', stopPosition);
+    canvas.addEventListener('mousemove',desenhar);
+    save.addEventListener('click', function() {
+        console.log(canvas.value);
+        const link = document.getElementById('displayImage');
+        let url = canvas.toDataURL();
+        link.src = canvas;
+        link.style.display = 'flex';
+        canvasBG.style.display = 'none';
+        canvasSection.style.display='none';
+   });
+
+   orange.addEventListener('click',function(e){
+    context.strokeStyle='orange';
+   });
+   black.addEventListener('click',function(e){
+    context.strokeStyle='black';
+   });
+   purple.addEventListener('click',function(e){
+    context.strokeStyle='purple';
+   });
+
+});
+
+    const successCallBack = (position)=>{
+            lat = position.coords.latitude;
+            long = position.coords.longitude;
+            
+            console.log(lat);
+            console.log(long);
+
+            document.getElementById("lat").innerHTML = lat;
+            document.getElementById("long").innerHTML = long;
+
+        }
+    const errorCallBack = (position)=>{
+            lat="";
+            long="";
+        }
+        
+    navigator.geolocation.getCurrentPosition(successCallBack, errorCallBack); 
 
         //Logout 
         function sair() {

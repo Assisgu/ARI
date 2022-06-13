@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -12,7 +13,7 @@
     <div class="container">
 
         <div class="form">
-            <form id="formulario" onsubmit="entrar(event)"> 
+            <form id="formulario" onsubmit="entrar(event)">
 
                 <div class="form-header">
                     <div class="title">
@@ -36,8 +37,8 @@
                     </div>
                 </div>
 
-                    <input class="login-button" type="submit" value="Entrar">
-                
+                <input class="login-button" type="submit" value="Entrar">
+
             </form>
         </div>
 
@@ -48,8 +49,8 @@
 
     <script>
         form = document.getElementById('formulario');
-        
-        function entrar(event){
+
+        function entrar(event) {
             event.preventDefault();
             form.reportValidity();
 
@@ -72,7 +73,7 @@
             listaUser = JSON.parse(localStorage.getItem('listaUser'))
 
             listaUser.forEach((item) => {
-                if(email.value == item.email && senha.value == item.senha) {
+                if (email.value == item.email && senha.value == item.senha) {
 
                     userValid = {
                         nome: item.nome,
@@ -84,22 +85,38 @@
                 }
             })
 
-            if(email.value == userValid.email && senha.value == userValid.senha){
+            // const successCallBack = (position) => {
+            //         let lat = position.coords.latitude;
+            //         let long = position.coords.longitude;
+            //         console.log(lat);
+            //         console.log(long);
+            //     }
+            //     const errorCallBack = (position) => {
+            //         lat = "";
+            //         long = "";
+            //     }
+            //     navigator.geolocation.getCurrentPosition(successCallBack, errorCallBack);
+
+            if (email.value == userValid.email && senha.value == userValid.senha) {
+
                 window.location.href = "../../Index/index.html"
                 let token = Math.random().toString(16).substr(2) + Math.random().toString(16).substr(2)
                 localStorage.setItem('token', token)
+                // localStorage.setItem('latitude', lat),
+                // localStorage.setItem('longitude', long),
 
                 localStorage.setItem('userLogado', JSON.stringify(userValid))
             } else {
-               emailLabel.setAttribute('style', 'color: red')
-               email.setAttribute('style', 'outline: 1px solid red')
-               senhaLabel.setAttribute('style', 'color:red')
-               senha.setAttribute('style', 'outline: 1px solid red')
-               error.setAttribute('style', 'display:block')
-               error.innerHTML = 'Email ou senha incorretos'
-               email.focus()
+                emailLabel.setAttribute('style', 'color: red')
+                email.setAttribute('style', 'outline: 1px solid red')
+                senhaLabel.setAttribute('style', 'color:red')
+                senha.setAttribute('style', 'outline: 1px solid red')
+                error.setAttribute('style', 'display:block')
+                error.innerHTML = 'Email ou senha incorretos'
+                email.focus()
             }
         }
     </script>
 </body>
+
 </html>
